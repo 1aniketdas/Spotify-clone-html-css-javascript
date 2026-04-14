@@ -63,7 +63,7 @@ async function main()
     for (let song of songs)
     {
             // let li=document.createElement("li");
-            // li.innerText=song.replaceAll("%20"," ").replaceAll(".mp3","").replaceAll("%5C","").replace("songs","");
+            // li.innerText=song.replaceAll("%20"," ").replaceAll(".mp3","").replaceAll("%5C","").replace("songs/","");
             // songul.appendChild(li);
 
             let li=document.createElement("li");
@@ -216,7 +216,7 @@ async function main()
                 
                 playBtn.src="img/pause-svgrepo-com.svg";
                 
-                document.querySelector(".songinfo").innerText=songs[index].replaceAll("%20"," ").replaceAll(".mp3","").replaceAll("%5C","").replace("songs","");
+                document.querySelector(".songinfo").innerText=songs[index].replaceAll("%20"," ").replaceAll(".mp3","").replaceAll("%5C","").replace("songs/","");
                 // document.querySelector(".songtime").innerHTML=" 0:00 / 00:00";
 
             }
@@ -319,7 +319,7 @@ async function main()
             });
             document.querySelectorAll(".songlist ul li img:last-child")[currentIndex].src = "img/pause-svgrepo-com.svg";
             playBtn.src="img/pause-svgrepo-com.svg";
-            document.querySelector(".songinfo").innerText=songs[currentIndex].replaceAll("%20"," ").replaceAll(".mp3","").replaceAll("%5C","").replace("songs","");
+            document.querySelector(".songinfo").innerText=songs[currentIndex].replaceAll("%20"," ").replaceAll(".mp3","").replaceAll("%5C","").replace("songs/","");
             //there is built-in URL decoder in JS which can be used as below instead of multiple replaceAll
             // document.querySelector(".songtime").innerHTML=" 0:00 / 00:00";
         }
@@ -336,7 +336,7 @@ async function main()
             });
             document.querySelectorAll(".songlist ul li img:last-child")[currentIndex].src = "img/pause-svgrepo-com.svg";
             playBtn.src="img/pause-svgrepo-com.svg";
-            document.querySelector(".songinfo").innerText=songs[currentIndex].replaceAll("%20"," ").replaceAll(".mp3","").replaceAll("%5C","").replace("songs","");
+            document.querySelector(".songinfo").innerText=songs[currentIndex].replaceAll("%20"," ").replaceAll(".mp3","").replaceAll("%5C","").replace("songs/","");
             // document.querySelector(".songtime").innerHTML=" 0:00 / 00:00";
         }
     });
