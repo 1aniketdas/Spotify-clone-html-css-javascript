@@ -70,7 +70,7 @@ async function main()
             li.innerHTML=`<img class="invert" src="img/musiclogo.svg">
                             <div class="info">
                                 <div>
-                                ${song.replaceAll("%20"," ").replaceAll(".mp3","").replaceAll("%5C","").replace("songs","")}
+                                ${song.replaceAll("%20"," ").replaceAll(".mp3","").replaceAll("%5C","").replace("songs/","")}
                                 </div>
                                 <div>artist name</div>
                                 <!-- <h4>song name</h4>
