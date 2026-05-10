@@ -44,7 +44,8 @@ function formatTime(seconds) {
 
 
 async function getSongs(folder) {
-    let a = await fetch(`http://127.0.0.1:3000/${folder}`);
+    // let a = await fetch(`http://127.0.0.1:3000/${folder}`);
+    let a = await fetch(`${folder}`);
     let response = await a.text();
     // console.log(response);
     let div = document.createElement("div");
@@ -72,7 +73,8 @@ async function getSongs(folder) {
 }
 
 async function displayAlbums() {
-    let a = await fetch(`http://127.0.0.1:3000/songs`);
+    // let a = await fetch(`http://127.0.0.1:3000/songs`);
+    let a = await fetch(`songs`);
     let response = await a.text();
     let div = document.createElement("div");
     div.innerHTML = response;
@@ -96,7 +98,8 @@ async function displayAlbums() {
             // console.log(e.href.split("songs")[1].replaceAll("%5C", "").replace("songs", "").replaceAll("/",""));
             // console.log(e.href.split("/").slice(-2)[0].replaceAll("%5C", "").replace("songs", ""));
             let folder=(e.href.split("/").slice(-2)[0].replaceAll("%5C", "").replace("songs", ""));
-                let metadata = await fetch(`http://127.0.0.1:3000/songs/${folder}/info.json`);
+                // let metadata = await fetch(`http://127.0.0.1:3000/songs/${folder}/info.json`);
+                let metadata = await fetch(`songs/${folder}/info.json`);
                 let metaresponse = await metadata.json();
                 // console.log(metaresponse);
                 card_container.innerHTML = card_container.innerHTML + `    
