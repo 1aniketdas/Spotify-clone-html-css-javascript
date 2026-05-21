@@ -36,60 +36,89 @@ function formatTime(seconds) {
 
 
 
+
+
+
+
+
+
+
 async function getSongs(folder) {
-
-    let response =await fetch(`${folder}/songs.json`);
-
-    let songNames = await response.json();
-
+    // let a = await fetch(`http://127.0.0.1:3000/${folder}`);
+    let a = await fetch(`${folder}`);
+    let response = await a.text();
+    // console.log(response);
+    let div = document.createElement("div");
+    div.innerHTML = response;
+    let as = div.getElementsByTagName("a");
+    // console.log(as);
+    // console.log("hehehe",as[1].getAttribute("href"));
     let songs = [];
+    for (let index = 0; index < as.length; index++) {
+        const element = as[index];
+        // console.log(element);
 
-    for(let song of songNames)
-    {
-        songs.push(`${folder}/${song}`);
+        // if(element.href.endsWith(".mp3"))
+        if (element.href.includes(".mp3")) {
+            // songs.push(element.href.split("songs")[1]);
+            // console.log(element.href);
+
+            songs.push(element.getAttribute("href"));
+            // console.log(element.getAttribute("href"));
+        }
     }
-
+    // console.log(songs);
     return songs;
+
 }
 
-
-
-
-
+// for local testing, you can use above getSongs function and below displayAlbums function which fetches the folder content and extracts mp3 links from it. But for deployment, you should have an API endpoint in your server which gives the list of songs in JSON format. Below is the code for that approach where we are fetching songs from an API endpoint and expecting JSON response from it. You can implement that API endpoint in your server which reads the folder content and gives the list of songs in JSON format. This approach is more efficient and cleaner as we are directly getting the required data in structured format without the need to parse HTML.
 
 
 async function displayAlbums() {
+    // let a = await fetch(`http://127.0.0.1:3000/songs`);
+    let a = await fetch(`songs`);
+    let response = await a.text();
+    let div = document.createElement("div");
+    div.innerHTML = response;
+    // console.log(div);
+    let anchors = div.getElementsByTagName("a");
+    // console.log(anchors);
+    let card_container = document.querySelector(".card-container");
+    let array=Array.from(anchors);
+    for(let index=0;index<array.length;index++)
+    {        
+        const e=array[index];
+        console.log(e);
+    // Array.from(anchors).forEach(async e => {
+        // console.log(e.href);
+        if(e.href.includes("songs"))
+        {
+            // console.log(e.href);
+            // console.log(e.href.split("/"));
+            // console.log(e.href.split("/")[3]);
+            // console.log(e.href.split("/")[3].replaceAll("%5C", "").replace("songs", ""));
+            // console.log(e.href.split("songs")[1].replaceAll("%5C", "").replace("songs", "").replaceAll("/",""));
+            // console.log(e.href.split("/").slice(-2)[0].replaceAll("%5C", "").replace("songs", ""));
+            let folder=(e.href.split("/").slice(-2)[0].replaceAll("%5C", "").replace("songs", ""));
+                // let metadata = await fetch(`http://127.0.0.1:3000/songs/${folder}/info.json`);
+                let metadata = await fetch(`songs/${folder}/info.json`);
+                let metaresponse = await metadata.json();
+                // console.log(metaresponse);
+                card_container.innerHTML = card_container.innerHTML + `    
+                    <div data-folder="${folder}" class="card">
+                        <img class="play" src="img/green-play-button.svg">
+                        <img class="cardimg" src="songs/${folder}/cover.jfif">
+                        <h3>${metaresponse.title}</h3>
+                    </div>
+                    `;
 
-    let response = await fetch("albums.json");
-
-    let albums = await response.json();
-
-    let card_container =document.querySelector(".card-container");
-
-    for(let album of albums)
-    {
-        let metadata =await fetch(`songs/${album.folder}/info.json`);
-
-        let metaresponse = await metadata.json();
-
-        card_container.innerHTML += `
-
-            <div data-folder="${album.folder}"
-            class="card">
-
-                <img class="play"
-                src="img/green-play-button.svg">
-
-                <img class="cardimg"
-                src="songs/${album.folder}/cover.jfif">
-
-                <h3>${metaresponse.title}</h3>
-
-            </div>
-        `;
-    }
+        }
+    // });
+    };
 }
 
+// <p>${metaresponse.description}</p>
 
 
 async function main() {
@@ -127,8 +156,8 @@ async function main() {
                     document.querySelectorAll(".songlist ul li img:last-child")[currentIndex].src = "img/pause-svgrepo-com.svg";
                     playBtn.src = "img/pause-svgrepo-com.svg";
                     // document.querySelector(".songinfo").innerText = songs[currentIndex].replaceAll("%20", " ").replaceAll(".mp3", "").replaceAll("%5C", "").replace("songs", "");
-                    // document.querySelector(".songinfo").innerText = decodeURIComponent(songs[currentIndex]).split("\\").slice(-1)[0].replace(".mp3", "");
-                    document.querySelector(".songinfo").innerText = songs[currentIndex].split("/").pop().replace(".mp3", "");
+                    document.querySelector(".songinfo").innerText = decodeURIComponent(songs[currentIndex]).split("\\").slice(-1)[0].replace(".mp3", "");
+                    
                     //there is built-in URL decoder in JS which can be used as below instead of multiple replaceAll
                     // document.querySelector(".songtime").innerHTML=" 0:00 / 00:00";
                 }
@@ -145,8 +174,7 @@ async function main() {
                     document.querySelectorAll(".songlist ul li img:last-child")[currentIndex].src = "img/pause-svgrepo-com.svg";
                     playBtn.src = "img/pause-svgrepo-com.svg";
                     // document.querySelector(".songinfo").innerText = songs[currentIndex].replaceAll("%20", " ").replaceAll(".mp3", "").replaceAll("%5C", "").replace("songs", "");
-                    // document.querySelector(".songinfo").innerText = decodeURIComponent(songs[currentIndex]).split("\\").slice(-1)[0].replace(".mp3", "");
-                    document.querySelector(".songinfo").innerText = songs[currentIndex].split("/").pop().replace(".mp3", "");
+                    document.querySelector(".songinfo").innerText = decodeURIComponent(songs[currentIndex]).split("\\").slice(-1)[0].replace(".mp3", "");
 
                     // document.querySelector(".songtime").innerHTML=" 0:00 / 00:00";
                 }
@@ -211,14 +239,9 @@ async function main() {
                 let li = document.createElement("li");
                 li.innerHTML = `<img class="invert" src="img/musiclogo.svg">
                             <div class="info">
-                                <!--<div>
-                                
-                                ${decodeURIComponent(song).split("\\").slice(-1)[0].replace(".mp3", "")}
-                                </div>-->
-
                                 <div>
                                 
-                                ${song.split("/").pop().replace(".mp3","")}
+                                ${decodeURIComponent(song).split("\\").slice(-1)[0].replace(".mp3", "")}
                                 </div>
                                 <!--<div>artist name</div>-->
                                 <!-- <h4>song name</h4>
@@ -365,8 +388,7 @@ async function main() {
                         playBtn.src = "img/pause-svgrepo-com.svg";
 
                         // document.querySelector(".songinfo").innerText = songs[index].replaceAll("%20", " ").replaceAll(".mp3", "").replaceAll("%5C", "").replace("songs", "");
-                        // document.querySelector(".songinfo").innerText = decodeURIComponent(songs[index]).split("\\").slice(-1)[0].replace(".mp3", "");
-                        document.querySelector(".songinfo").innerText = songs[index].split("/").pop().replace(".mp3","");
+                        document.querySelector(".songinfo").innerText = decodeURIComponent(songs[index]).split("\\").slice(-1)[0].replace(".mp3", "");
                         // document.querySelector(".songtime").innerHTML=" 0:00 / 00:00";
 
                     }
