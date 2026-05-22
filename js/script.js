@@ -128,7 +128,18 @@ async function main() {
                     playBtn.src = "img/pause-svgrepo-com.svg";
                     // document.querySelector(".songinfo").innerText = songs[currentIndex].replaceAll("%20", " ").replaceAll(".mp3", "").replaceAll("%5C", "").replace("songs", "");
                     // document.querySelector(".songinfo").innerText = decodeURIComponent(songs[currentIndex]).split("\\").slice(-1)[0].replace(".mp3", "");
-                    document.querySelector(".songinfo").innerText = songs[currentIndex].split("/").pop().replace(".mp3", "");
+                    // document.querySelector(".songinfo").innerText = songs[currentIndex].split("/").pop().replace(".mp3", "");
+
+                    let songName = songs[currentIndex].split("/").pop().replace(".mp3", "");
+                        document.querySelector(".songinfo").innerHTML = 
+                        `<div class="playbar-scroll">
+                            <span>${songName}</span>
+                        </div>`;
+                        let playbarText=document.querySelector(".playbar-scroll span");
+                        if(playbarText.scrollWidth > playbarText.parentElement.clientWidth)
+                        {
+                            playbarText.classList.add("scroll-active");
+                        }
                     //there is built-in URL decoder in JS which can be used as below instead of multiple replaceAll
                     // document.querySelector(".songtime").innerHTML=" 0:00 / 00:00";
                 }
@@ -146,7 +157,18 @@ async function main() {
                     playBtn.src = "img/pause-svgrepo-com.svg";
                     // document.querySelector(".songinfo").innerText = songs[currentIndex].replaceAll("%20", " ").replaceAll(".mp3", "").replaceAll("%5C", "").replace("songs", "");
                     // document.querySelector(".songinfo").innerText = decodeURIComponent(songs[currentIndex]).split("\\").slice(-1)[0].replace(".mp3", "");
-                    document.querySelector(".songinfo").innerText = songs[currentIndex].split("/").pop().replace(".mp3", "");
+                    // document.querySelector(".songinfo").innerText = songs[currentIndex].split("/").pop().replace(".mp3", "");
+
+                    let songName = songs[currentIndex].split("/").pop().replace(".mp3", "");
+                        document.querySelector(".songinfo").innerHTML = 
+                        `<div class="playbar-scroll">
+                            <span>${songName}</span>
+                        </div>`;
+                        let playbarText=document.querySelector(".playbar-scroll span");
+                        if(playbarText.scrollWidth > playbarText.parentElement.clientWidth)
+                        {
+                            playbarText.classList.add("scroll-active");
+                        }
 
                     // document.querySelector(".songtime").innerHTML=" 0:00 / 00:00";
                 }
@@ -211,14 +233,10 @@ async function main() {
                 let li = document.createElement("li");
                 li.innerHTML = `<img class="invert" src="img/musiclogo.svg">
                             <div class="info">
-                                <!--<div>
-                                
-                                ${decodeURIComponent(song).split("\\").slice(-1)[0].replace(".mp3", "")}
-                                </div>-->
+                                <!--<div>${decodeURIComponent(song).split("\\").slice(-1)[0].replace(".mp3", "")}</div>-->
 
-                                <div>
-                                
-                                ${song.split("/").pop().replace(".mp3","")}
+                                <div class="songname-scroll">
+                                <span>${song.split("/").pop().replace(".mp3","")}</span>
                                 </div>
                                 <!--<div>artist name</div>-->
                                 <!-- <h4>song name</h4>
@@ -227,6 +245,11 @@ async function main() {
                             <img class="invert" src="img/play-svgrepo-com.svg" alt="">`;
                 songul.appendChild(li);
 
+                let songText = li.querySelector(".songname-scroll span");
+                if(songText.scrollWidth > songText.parentElement.clientWidth)
+                {
+                    songText.classList.add("scroll-active");
+                }
 
                 // songul.innerHTML=songul.innerHTML+song;
                 // or
@@ -366,7 +389,17 @@ async function main() {
 
                         // document.querySelector(".songinfo").innerText = songs[index].replaceAll("%20", " ").replaceAll(".mp3", "").replaceAll("%5C", "").replace("songs", "");
                         // document.querySelector(".songinfo").innerText = decodeURIComponent(songs[index]).split("\\").slice(-1)[0].replace(".mp3", "");
-                        document.querySelector(".songinfo").innerText = songs[index].split("/").pop().replace(".mp3","");
+                        // document.querySelector(".songinfo").innerText = songs[index].split("/").pop().replace(".mp3","");
+                        let songName = songs[index].split("/").pop().replace(".mp3", "");
+                        document.querySelector(".songinfo").innerHTML = 
+                        `<div class="playbar-scroll">
+                            <span>${songName}</span>
+                        </div>`;
+                        let playbarText=document.querySelector(".playbar-scroll span");
+                        if(playbarText.scrollWidth > playbarText.parentElement.clientWidth)
+                        {
+                            playbarText.classList.add("scroll-active");
+                        }
                         // document.querySelector(".songtime").innerHTML=" 0:00 / 00:00";
 
                     }
