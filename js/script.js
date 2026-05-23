@@ -446,34 +446,6 @@ async function main() {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            // currentAudio.addEventListener("timeupdate",()=>{
-            //     let currentTime = currentAudio.currentTime;
-            //     let duration = currentAudio.duration;
-            //     let currentMinutes = Math.floor(currentTime / 60);
-            //     let currentSeconds = Math.floor(currentTime % 60);
-            //     let durationMinutes = Math.floor(duration / 60);
-            //     let durationSeconds = Math.floor(duration % 60);
-            //     if (currentSeconds < 10) currentSeconds = "0" + currentSeconds;
-            //     if (durationSeconds < 10) durationSeconds = "0" + durationSeconds;
-            //     document.querySelector(".songtime").innerHTML=` ${currentMinutes}:${currentSeconds} / ${durationMinutes}:${durationSeconds}`;
-            // });
-
-
             // watch from yt from that same playlist, how codewithharry have implemented the next and previous functionality
             
 
