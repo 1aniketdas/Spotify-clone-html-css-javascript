@@ -4,7 +4,32 @@ let currentIndex = -1;
 let songs = [];
 
 
+let ytVideos =
+{
+    "The Weeknd & Ariana Grande - Save Your Tears (Remix)":
+    "https://www.youtube.com/embed/LIIDh-qI9oI",
 
+    "Ariana Grande - 7 rings (Audio)":
+    "https://www.youtube.com/embed/Tl_N2RSD0dk",
+    
+    "Ariana Grande - No Tears Left To Cry":
+    "https://www.youtube.com/embed/i52Sv2f-wm8",
+    
+    "Blazing Heart EN ver. - Chrissy Costanza  HOYO-MiX Official English Lyrics Genshin Impact":
+    "https://www.youtube.com/embed/fd5vxULcZYw",
+
+    "In Stillness, Waiting - HOYO-MiX Official English Lyrics - Skirk Lament of a Ruined World ost":
+    "https://www.youtube.com/embed/IWa3Xvn2MhQ",
+
+    "Devil Trigger (FULL VERSION)  Metal Cover by RichaadEB (ft. Lollia & LittleVMills)":
+    "https://www.youtube.com/embed/5fkOtxzHOrM",
+
+    "TruE":
+    "https://www.youtube.com/embed/RvdK-6n7O0Y",
+
+    "Oracle":
+    "https://www.youtube.com/embed/CXEeQ9kCOVY"    
+}
 
 
 function formatTime(seconds) {
@@ -92,6 +117,26 @@ function updatePlaybarSong(songName)
     }
 }
 
+
+
+
+function showVideo(songName)
+{
+    let floatingVideo =document.querySelector(".floating-video");
+
+    let ytPlayer =document.getElementById("ytPlayer");
+
+    if(ytVideos[songName])
+    {
+        ytPlayer.src =ytVideos[songName] + "?autoplay=1&mute=1&rel=0";
+
+        floatingVideo.classList.remove("hidden");
+    }
+}
+
+
+
+
 async function main() {
 
 
@@ -126,6 +171,7 @@ async function main() {
 
                     let songName = songs[currentIndex].split("/").pop().replace(".mp3", "");
                     updatePlaybarSong(songName);
+                    showVideo(songName);
 
                 }
             });
@@ -144,6 +190,7 @@ async function main() {
 
                     let songName = songs[currentIndex].split("/").pop().replace(".mp3", "");
                     updatePlaybarSong(songName);
+                    showVideo(songName);
 
 
                 }
@@ -240,6 +287,7 @@ async function main() {
 
                         let songName = songs[index].split("/").pop().replace(".mp3", "");
                         updatePlaybarSong(songName);
+                        showVideo(songName);
 
 
                     }
@@ -291,9 +339,29 @@ async function main() {
             // watch from yt from that same playlist, how codewithharry have implemented the next and previous functionality
             
 
-            currentAudio.addEventListener("ended", () => {
-                if (currentIndex < songs.length - 1) {
-                    playSong(currentIndex + 1);
+            currentAudio.addEventListener("ended", () =>
+            {
+                if(currentIndex < songs.length - 1)
+                {
+                    currentIndex++;
+                
+                    currentAudio.src = songs[currentIndex];
+                    currentAudio.play();
+                
+                    document.querySelectorAll(".songlist ul li img:last-child")
+                    .forEach(icon =>
+                    {
+                        icon.src = "img/play-svgrepo-com.svg";
+                    });
+                
+                    document.querySelectorAll(".songlist ul li img:last-child")[currentIndex]
+                    .src = "img/pause-svgrepo-com.svg";
+                
+                    playBtn.src = "img/pause-svgrepo-com.svg";
+                
+                    let songName =songs[currentIndex].split("/").pop().replace(".mp3", "");
+                    updatePlaybarSong(songName);
+                    showVideo(songName);
                 }
             });
 
@@ -303,6 +371,11 @@ async function main() {
 
                 currentAudio.volume = parseInt(e.target.value) / 100;
                 // Assuming the range input gives a value between 0 and 100
+                if(currentAudio.volume>0)
+                {
+                    currentAudio.muted=false;
+                    document.querySelector(".volume img").src="img/volume-loud-svgrepo-com.svg";
+                }
             });
 
 
@@ -310,6 +383,90 @@ async function main() {
 
         });
     });
+
+    document.querySelector(".close-video")
+.addEventListener("click", () =>
+{
+    document.querySelector(".floating-video")
+    .classList.add("hidden");
+
+    document.getElementById("ytPlayer").src = "";
+});
+
+let floatingVideo =
+document.querySelector(".floating-video");
+
+let videoHeader =
+document.querySelector(".video-header");
+
+let isDragging = false;
+
+let offsetX = 0;
+let offsetY = 0;
+
+videoHeader.addEventListener("mousedown", (e) =>
+{
+    isDragging = true;
+
+    offsetX =
+    e.clientX - floatingVideo.offsetLeft;
+
+    offsetY =
+    e.clientY - floatingVideo.offsetTop;
+});
+
+document.addEventListener("mousemove", (e) =>
+{
+    if(!isDragging) return;
+
+    floatingVideo.style.right = "auto";
+    floatingVideo.style.bottom = "auto";
+
+    floatingVideo.style.left =
+    e.clientX - offsetX + "px";
+
+    floatingVideo.style.top =
+    e.clientY - offsetY + "px";
+});
+
+document.addEventListener("mouseup", () =>
+{
+    isDragging = false;
+});
+
+
+
+videoHeader.addEventListener("touchstart", (e) =>
+{
+    isDragging = true;
+
+    offsetX =
+    e.touches[0].clientX -
+    floatingVideo.offsetLeft;
+
+    offsetY =
+    e.touches[0].clientY -
+    floatingVideo.offsetTop;
+});
+
+document.addEventListener("touchmove", (e) =>
+{
+    if(!isDragging) return;
+
+    floatingVideo.style.right = "auto";
+    floatingVideo.style.bottom = "auto";
+
+    floatingVideo.style.left =
+    e.touches[0].clientX - offsetX + "px";
+
+    floatingVideo.style.top =
+    e.touches[0].clientY - offsetY + "px";
+});
+
+document.addEventListener("touchend", () =>
+{
+    isDragging = false;
+});
 
 }
 main();
